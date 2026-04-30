@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MICE — señal de búsqueda</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --card: #151a22;
+      --border: #2a3341;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --accent: #5c9eff;
+      --accent2: #34c759;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.35rem;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .disclaimer {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 1rem;
+      color: var(--accent);
+    }
+    .chart-box { position: relative; height: 320px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    tr:hover td { background: rgba(92, 158, 255, 0.06); }
+    .num { font-variant-numeric: tabular-nums; text-align: right; }
+    .empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+    .empty a { color: var(--accent); }
+    .meta { font-size: 0.8rem; color: var(--muted); margin-top: 1rem; }
+    .hint-box {
+      text-align: left;
+      max-width: 36rem;
+      margin: 0 auto 1.25rem;
+      padding: 1rem 1.1rem;
+      background: rgba(92, 158, 255, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    .hint-box code { font-size: 0.82rem; color: var(--accent2); }
+    .err-snippet { color: #f5a623; font-size: 0.82rem; margin-top: 0.5rem; white-space: pre-wrap; }
+    ol.steps { text-align: left; margin: 0.75rem 0 0 1.1rem; color: var(--muted); }
+    ol.steps li { margin: 0.35rem 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Inteligencia MICE (señal de búsqueda)</h1>
+    <p class="sub">Vista legible para pantalla o captura — no sustituye informe ejecutivo.</p>
+
+    {% if not has_data %}
+    <div class="card empty">
+      <p><strong>No hay ningún run OK con filas guardadas</strong> (lo que usa esta vista, /csv y /latest).</p>
+
+      {% if hints and hints.last_run_status %}
+      <div class="hint-box">
+        <strong>Último run en la base:</strong> <code>{{ hints.last_run_id_short }}…</code>
+        · estado <code>{{ hints.last_run_status }}</code>
+        · snapshots guardados: <strong>{{ hints.last_run_snapshots }}</strong>
+        {% if hints.last_run_error %}
+        <div class="err-snippet">{{ hints.last_run_error }}</div>
+        {% endif %}
+        {% if hints.last_run_status == 'error' %}
+        <p style="margin:0.6rem 0 0; color:var(--muted); font-size:0.85rem;">
+          Revisa credenciales DataForSEO en <code>poc_mice/.env</code> o usa la demo local abajo.
+        </p>
+        {% endif %}
+      </div>
+      {% elif hints %}
+      <div class="hint-box">Aún no hay runs de ingesta en esta base de datos.</div>
+      {% endif %}
+
+      <p style="margin-top:1.25rem;">Opciones:</p>
+      <ol class="steps">
+        <li><strong>Datos reales:</strong> en <a href="/docs">/docs</a> ejecuta <code>POST /v1/ingest/run</code> con cuerpo <code>{}</code> y credenciales DataForSEO.</li>
+        <li><strong>Solo probar la vista (ficticio):</strong> en <code>poc_mice/.env</code> pon <code>POC_ALLOW_FAKE_DATA=1</code>, reinicia el servidor y ejecuta <code>POST /v1/ingest/demo-local</code> en /docs. Luego recarga esta página.</li>
+      </ol>
+      {% if not demo_enabled %}
+      <p class="meta">La demo local está <strong>desactivada</strong> (<code>POC_ALLOW_FAKE_DATA</code> no es 1).</p>
+      {% else %}
+      <p class="meta">Demo local <strong>permitida</strong>: puedes llamar ya a <code>POST /v1/ingest/demo-local</code>.</p>
+      {% endif %}
+      <p><a href="/docs">Abrir Swagger (/docs)</a></p>
+    </div>
+    {% else %}
+
+    <div class="disclaimer">
+      Los volúmenes son <strong>estimaciones</strong> de intención de búsqueda (fuente DataForSEO / entorno tipo Google Ads).
+      No indican congresos cerrados ni RFP. Extracción: <strong>{{ finished_at }}</strong> · Run <code>{{ run_id_short }}…</code>
+    </div>
+
+    <div class="card">
+      <h2>Top por volumen mensual estimado</h2>
+      <div class="chart-box">
+        <canvas id="volChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Tabla completa</h2>
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Mercado</th>
+              <th>Keyword</th>
+              <th class="num">Volumen est.</th>
+              <th class="num">Competencia</th>
+              <th class="num">CPC</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+            <tr>
+              <td>{{ r.market }}</td>
+              <td>{{ r.keyword }}</td>
+              <td class="num">{{ r.volume }}</td>
+              <td class="num">{{ r.competition }}</td>
+              <td class="num">{{ r.cpc }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">Exportar: <a href="/csv" style="color: var(--accent);">/csv</a> · API JSON: <a href="/v1/snapshots/latest" style="color: var(--accent);">/v1/snapshots/latest</a></p>
+    </div>
+
+    <script>
+      const labels = {{ chart_labels | tojson }};
+      const values = {{ chart_values | tojson }};
+      const ctx = document.getElementById('volChart');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Volumen mensual (est.)',
+            data: values,
+            backgroundColor: 'rgba(92, 158, 255, 0.65)',
+            borderColor: 'rgba(92, 158, 255, 1)',
+            borderWidth: 1,
+            borderRadius: 6,
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255,255,255,0.06)' },
+              ticks: { color: '#9aa0a6' }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#e8eaed', font: { size: 11 } }
+            }
+          }
+        }
+      });
+    </script>
+    {% endif %}
+  </div>
+</body>
+</html>

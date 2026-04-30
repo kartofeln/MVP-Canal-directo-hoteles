@@ -1,0 +1,298 @@
+{
+    "project": {
+        "name": "LinkedIn Post - Sector Turístico",
+        "version": "1.0",
+        "description": "Diseño profesional para post de LinkedIn sobre datos del sector turístico español"
+    },
+    "frames": {
+        "main_post": {
+            "width": 1200,
+            "height": 628,
+            "background": "#FFFFFF",
+            "description": "Post principal para LinkedIn"
+        },
+        "carousel_1": {
+            "width": 1080,
+            "height": 1080,
+            "background": "#FFFFFF",
+            "description": "Slide 1 del carrusel - Header"
+        },
+        "carousel_2": {
+            "width": 1080,
+            "height": 1080,
+            "background": "#FFFFFF",
+            "description": "Slide 2 del carrusel - Datos"
+        },
+        "carousel_3": {
+            "width": 1080,
+            "height": 1080,
+            "background": "#FFFFFF",
+            "description": "Slide 3 del carrusel - Destinos"
+        },
+        "carousel_4": {
+            "width": 1080,
+            "height": 1080,
+            "background": "#FFFFFF",
+            "description": "Slide 4 del carrusel - Insights"
+        }
+    },
+    "colors": {
+        "primary": {
+            "linkedin_blue": "#0077b5",
+            "linkedin_light_blue": "#00a0dc",
+            "cta_green": "#28a745",
+            "cta_light_green": "#20c997"
+        },
+        "gradients": {
+            "header": {
+                "type": "linear",
+                "angle": 135,
+                "stops": [
+                    {
+                        "position": 0,
+                        "color": "#0077b5"
+                    },
+                    {
+                        "position": 100,
+                        "color": "#00a0dc"
+                    }
+                ]
+            },
+            "highlight": {
+                "type": "linear",
+                "angle": 135,
+                "stops": [
+                    {
+                        "position": 0,
+                        "color": "#f093fb"
+                    },
+                    {
+                        "position": 100,
+                        "color": "#f5576c"
+                    }
+                ]
+            },
+            "cta": {
+                "type": "linear",
+                "angle": 135,
+                "stops": [
+                    {
+                        "position": 0,
+                        "color": "#28a745"
+                    },
+                    {
+                        "position": 100,
+                        "color": "#20c997"
+                    }
+                ]
+            }
+        },
+        "backgrounds": {
+            "main": "#FFFFFF",
+            "cards": "#F8F9FA",
+            "insights": "#E3F2FD",
+            "footer": "#F8F9FA"
+        },
+        "text": {
+            "primary": "#333333",
+            "secondary": "#666666",
+            "white": "#FFFFFF",
+            "accent": "#1976D2"
+        }
+    },
+    "typography": {
+        "font_family": "Inter",
+        "styles": {
+            "h1": {
+                "font_size": 48,
+                "font_weight": "Bold",
+                "line_height": 1.2,
+                "letter_spacing": 0.5
+            },
+            "h2": {
+                "font_size": 36,
+                "font_weight": "Bold",
+                "line_height": 1.3,
+                "letter_spacing": 0.3
+            },
+            "h3": {
+                "font_size": 24,
+                "font_weight": "Bold",
+                "line_height": 1.4,
+                "letter_spacing": 0.2
+            },
+            "body": {
+                "font_size": 18,
+                "font_weight": "Regular",
+                "line_height": 1.5,
+                "letter_spacing": 0.1
+            },
+            "caption": {
+                "font_size": 16,
+                "font_weight": "Medium",
+                "line_height": 1.4,
+                "letter_spacing": 0.1
+            },
+            "cta": {
+                "font_size": 20,
+                "font_weight": "Bold",
+                "line_height": 1.3,
+                "letter_spacing": 0.2
+            }
+        }
+    },
+    "layout": {
+        "grid": {
+            "columns": 12,
+            "rows": 8,
+            "gutter": 20,
+            "margin": 40
+        },
+        "spacing": {
+            "xs": 8,
+            "sm": 16,
+            "md": 24,
+            "lg": 32,
+            "xl": 40,
+            "xxl": 48
+        },
+        "border_radius": {
+            "sm": 8,
+            "md": 12,
+            "lg": 16,
+            "xl": 24,
+            "pill": 50
+        }
+    },
+    "components": {
+        "header": {
+            "height": 120,
+            "padding": "40px",
+            "background": "gradient_header",
+            "text_color": "#FFFFFF",
+            "border_radius": "0"
+        },
+        "highlight_box": {
+            "height": 100,
+            "padding": "30px",
+            "background": "gradient_highlight",
+            "text_color": "#FFFFFF",
+            "border_radius": 12,
+            "margin": "20px 0"
+        },
+        "stat_card": {
+            "width": 280,
+            "height": 120,
+            "padding": "25px",
+            "background": "#F8F9FA",
+            "border_left": "5px solid #0077b5",
+            "border_radius": 10,
+            "shadow": {
+                "x": 0,
+                "y": 4,
+                "blur": 12,
+                "color": "rgba(0,0,0,0.1)"
+            }
+        },
+        "insights_box": {
+            "padding": "25px",
+            "background": "#E3F2FD",
+            "border_radius": 10,
+            "margin": "20px 0"
+        },
+        "hashtag": {
+            "padding": "8px 16px",
+            "background": "#0077b5",
+            "color": "#FFFFFF",
+            "border_radius": 25,
+            "font_size": 16,
+            "font_weight": "Medium"
+        },
+        "cta_button": {
+            "padding": "18px 30px",
+            "background": "gradient_cta",
+            "color": "#FFFFFF",
+            "border_radius": 30,
+            "font_size": 20,
+            "font_weight": "Bold"
+        }
+    },
+    "content": {
+        "main_title": "🌍 Sector Turístico",
+        "subtitle": "Datos actualizados de turismo doméstico en España",
+        "highlight_title": "📊 Julio 2025",
+        "highlight_subtitle": "Análisis del turismo interno español",
+        "stats": [
+            {
+                "icon": "🏖️",
+                "title": "Destinos Costeros"
+            },
+            {
+                "icon": "🏔️",
+                "title": "Turismo Rural"
+            },
+            {
+                "icon": "🏛️",
+                "title": "Turismo Cultural"
+            },
+            {
+                "icon": "🍽️",
+                "title": "Turismo Gastronómico"
+            }
+        ],
+        "insights": [
+            "Recuperación sostenida del sector turístico nacional",
+            "Nuevas tendencias en preferencias de viaje",
+            "Impacto de la digitalización en la planificación"
+        ],
+        "hashtags": [
+            "#TurismoEspaña",
+            "#SectorTurístico",
+            "#DatosTurismo",
+            "#SEGITTUR",
+            "#TurismoDoméstico",
+            "#AnálisisTurístico"
+        ],
+        "cta_text": "📈 Ver análisis completo"
+    },
+    "export_settings": {
+        "formats": [
+            "PNG",
+            "JPG"
+        ],
+        "scales": [
+            "1x",
+            "2x"
+        ],
+        "suffix": "@{scale}x",
+        "constraints": {
+            "scale": "scale",
+            "format": "format"
+        }
+    },
+    "prototype": {
+        "interactions": {
+            "hover_effects": {
+                "stat_cards": {
+                    "type": "hover",
+                    "effect": "elevation",
+                    "value": 2
+                },
+                "cta_button": {
+                    "type": "hover",
+                    "effect": "scale",
+                    "value": 1.05
+                },
+                "hashtags": {
+                    "type": "hover",
+                    "effect": "opacity",
+                    "value": 0.8
+                }
+            }
+        }
+    }
+}
+
+
+
+

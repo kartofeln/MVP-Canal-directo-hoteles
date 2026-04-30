@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Hotelero - Generador de Imagen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .hotel-central {
+            position: relative;
+            text-align: center;
+            margin: 40px 0;
+            z-index: 2;
+        }
+
+        .hotel-icon {
+            font-size: 4em;
+            color: #667eea;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .data-holograms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hologram {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .hologram:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .hologram-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .hologram-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .hologram-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .metric {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .metric:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .metric:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .metric:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .connection-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.5), transparent);
+            height: 2px;
+            animation: flow 2s infinite;
+        }
+
+        @keyframes flow {
+            0% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🏨 CRM Hotelero</h1>
+            <p class="subtitle">El corazón digital de la experiencia del huésped</p>
+        </div>
+
+        <div class="hotel-central">
+            <div class="hotel-icon">🏨</div>
+            <h2>Centro de Control Digital</h2>
+        </div>
+
+        <div class="data-holograms">
+            <div class="hologram">
+                <div class="hologram-icon">📊</div>
+                <div class="hologram-title">Conocimiento Profundo</div>
+                <div class="hologram-desc">Preferencias, historial y patrones de comportamiento</div>
+            </div>
+            <div class="hologram">
+                <div class="hologram-icon">🎯</div>
+                <div class="hologram-title">Personalización</div>
+                <div class="hologram-desc">Experiencias únicas para cada huésped</div>
+            </div>
+            <div class="hologram">
+                <div class="hologram-icon">⚡</div>
+                <div class="hologram-title">Eficiencia</div>
+                <div class="hologram-desc">Automatización y optimización de procesos</div>
+            </div>
+            <div class="hologram">
+                <div class="hologram-icon">💰</div>
+                <div class="hologram-title">ROI</div>
+                <div class="hologram-desc">Resultados medibles y crecimiento sostenible</div>
+            </div>
+        </div>
+
+        <div class="metrics">
+            <div class="metric">
+                <div class="metric-value">+35%</div>
+                <div class="metric-label">Reservas Directas</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">+40%</div>
+                <div class="metric-label">Satisfacción</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">+25%</div>
+                <div class="metric-label">Valor por Huésped</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">-50%</div>
+                <div class="metric-label">Tiempo Resolución</div>
+            </div>
+        </div>
+
+        <div class="connection-lines">
+            <div class="line" style="top: 20%; left: 10%; width: 80%; animation-delay: 0s;"></div>
+            <div class="line" style="top: 40%; left: 5%; width: 90%; animation-delay: 0.5s;"></div>
+            <div class="line" style="top: 60%; left: 15%; width: 70%; animation-delay: 1s;"></div>
+            <div class="line" style="top: 80%; left: 0%; width: 100%; animation-delay: 1.5s;"></div>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="download-btn" onclick="captureImage()">📸 Capturar Imagen</button>
+        </div>
+
+        <div class="footer">
+            <p>🎨 Imagen generada para LinkedIn - CRM Hotelero</p>
+        </div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        function captureImage() {
+            html2canvas(document.querySelector('.container'), {
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'crm-hotelero-linkedin.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -21,6 +21,26 @@ st.set_page_config(
 )
 st.title("Tourism Demand Index")
 
+with st.expander("ℹ️ Cómo se usa y limitaciones"):
+    st.markdown("""
+    **Cómo se usa**
+    - **Demand Index:** pestaña con el índice de demanda turística y su evolución mensual.
+    - **Volumen de búsqueda:** tabla y gráficos por destino (España, Grecia, Dubai, Tailandia, etc.) y por país (España, Alemania, Reino Unido, Francia, Italia).
+    - Por defecto se muestran **datos de ejemplo** para que puedas ver el dashboard sin esperar.
+    - Si hay datos en vivo disponibles, el botón **"Actualizar con datos en vivo"** refresca con información actual (máximo **una vez al día** para mantener el servicio estable).
+    - Puedes **filtrar** por país y keyword, cambiar el **Top N** de la tabla y **descargar el CSV**.
+
+    **¿Los datos en vivo son reales?**  
+    Sí. Cuando usas «Actualizar con datos en vivo», volumen de búsqueda, competencia y CPC provienen de datos reales (vía API), equivalentes a los del planificador de Google Ads.
+
+    **Inversión est. (€/mes):** estimación de gasto en Google Ads (volumen × 3% CTR × CPC). Orientativa, no es el gasto real de ninguna cuenta.
+
+    **Limitaciones**
+    - La actualización en vivo está limitada a **1 vez cada 24 horas** por app.
+    - Los datos de ejemplo son orientativos; los datos en vivo dependen de la disponibilidad del servicio.
+    - Destinos y países están fijados en la versión actual (no se pueden añadir más desde la interfaz).
+    """)
+
 # En producción: ocultar sidebar, menú, cabecera y que nadie vea tu correo
 if _usar_secrets:
     st.markdown("""
@@ -95,22 +115,26 @@ LOCATION_CODES = {
 
 def get_demo_data():
     """Datos de ejemplo para que los visitantes vean el dashboard sin consumir API."""
+    rows = [
+        ("España", "turismo España", 201000, 0.85, 0.42),
+        ("España", "viajes a Dubai", 165000, 0.72, 0.89),
+        ("Alemania", "turismo España", 135000, 0.78, 0.38),
+        ("Reino Unido", "viajes Grecia", 110000, 0.81, 0.55),
+        ("Francia", "turismo Tailandia", 99000, 0.69, 0.62),
+        ("Italia", "viajes Marruecos", 74000, 0.65, 0.48),
+        ("España", "turismo Canarias", 90500, 0.71, 0.31),
+        ("Alemania", "vuelos Japón", 82300, 0.88, 1.12),
+        ("Reino Unido", "turismo Malta", 60100, 0.58, 0.44),
+        ("Francia", "viajes Croacia", 55200, 0.64, 0.52),
+        ("España", "vuelos a Abu Dhabi", 49500, 0.76, 0.95),
+        ("Italia", "viajes a Dubai", 67800, 0.74, 0.87),
+        ("Reino Unido", "turismo España", 142000, 0.82, 0.41),
+        ("Alemania", "viajes Grecia", 88700, 0.77, 0.58),
+        ("Francia", "turismo Canarias", 32100, 0.62, 0.35),
+    ]
     return pd.DataFrame([
-        {"País": "España", "Keyword": "turismo España", "Volumen Mensual": 201000, "Competencia": 0.85, "CPC (€)": 0.42},
-        {"País": "España", "Keyword": "viajes a Dubai", "Volumen Mensual": 165000, "Competencia": 0.72, "CPC (€)": 0.89},
-        {"País": "Alemania", "Keyword": "turismo España", "Volumen Mensual": 135000, "Competencia": 0.78, "CPC (€)": 0.38},
-        {"País": "Reino Unido", "Keyword": "viajes Grecia", "Volumen Mensual": 110000, "Competencia": 0.81, "CPC (€)": 0.55},
-        {"País": "Francia", "Keyword": "turismo Tailandia", "Volumen Mensual": 99000, "Competencia": 0.69, "CPC (€)": 0.62},
-        {"País": "Italia", "Keyword": "viajes Marruecos", "Volumen Mensual": 74000, "Competencia": 0.65, "CPC (€)": 0.48},
-        {"País": "España", "Keyword": "turismo Canarias", "Volumen Mensual": 90500, "Competencia": 0.71, "CPC (€)": 0.31},
-        {"País": "Alemania", "Keyword": "vuelos Japón", "Volumen Mensual": 82300, "Competencia": 0.88, "CPC (€)": 1.12},
-        {"País": "Reino Unido", "Keyword": "turismo Malta", "Volumen Mensual": 60100, "Competencia": 0.58, "CPC (€)": 0.44},
-        {"País": "Francia", "Keyword": "viajes Croacia", "Volumen Mensual": 55200, "Competencia": 0.64, "CPC (€)": 0.52},
-        {"País": "España", "Keyword": "vuelos a Abu Dhabi", "Volumen Mensual": 49500, "Competencia": 0.76, "CPC (€)": 0.95},
-        {"País": "Italia", "Keyword": "viajes a Dubai", "Volumen Mensual": 67800, "Competencia": 0.74, "CPC (€)": 0.87},
-        {"País": "Reino Unido", "Keyword": "turismo España", "Volumen Mensual": 142000, "Competencia": 0.82, "CPC (€)": 0.41},
-        {"País": "Alemania", "Keyword": "viajes Grecia", "Volumen Mensual": 88700, "Competencia": 0.77, "CPC (€)": 0.58},
-        {"País": "Francia", "Keyword": "turismo Canarias", "Volumen Mensual": 32100, "Competencia": 0.62, "CPC (€)": 0.35},
+        {"País": p, "Keyword": k, "Volumen Mensual": v, "Competencia": c, "CPC (€)": cpc, "Inversión est. (€/mes)": round(v * 0.03 * cpc, 2)}
+        for p, k, v, c, cpc in rows
     ])
 
 
@@ -134,12 +158,17 @@ def fetch_search_volume(headers):
         if data.get("status_code") == 20000:
             for task in data.get("tasks", []):
                 for item in task.get("result", []):
+                    vol = item.get("search_volume") or 0
+                    cpc = item.get("cpc") or 0
+                    # Inversión estimada mensual (€): volumen × 3% CTR × CPC
+                    inv_est = round(vol * 0.03 * cpc, 2)
                     resultados.append({
                         "País": pais,
                         "Keyword": item.get("keyword"),
-                        "Volumen Mensual": item.get("search_volume"),
+                        "Volumen Mensual": vol,
                         "Competencia": item.get("competition"),
-                        "CPC (€)": item.get("cpc")
+                        "CPC (€)": cpc,
+                        "Inversión est. (€/mes)": inv_est
                     })
         else:
             st.error(f"❌ {pais}: {data.get('status_message', 'Error desconocido')}")

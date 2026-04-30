@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Imagen - Medios de Pago Digitales</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .image-preview {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .competition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .competitor-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .competitor-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .competitor-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .competitor-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .competitor-desc {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin: 30px 0;
+        }
+
+        .cta-button {
+            background: white;
+            color: #fa709a;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #666;
+        }
+
+        .hashtags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .hashtag {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .competition-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💳 Medios de Pago Digitales</h1>
+            <p>La Nueva Batalla del Control Comercial en el Sector Turístico</p>
+        </div>
+
+        <div class="content">
+            <div class="image-preview">
+                <h2 style="font-size: 2.5em; margin-bottom: 20px;">🏆 Guerra por la Dominancia del Mercado</h2>
+                <p style="font-size: 1.3em; margin-bottom: 30px;">Bancos vs Fintechs vs Big Tech</p>
+                <div style="font-size: 4em; margin: 20px 0;">⚔️💳🚀</div>
+            </div>
+
+            <div class="competition-grid">
+                <div class="competitor-card">
+                    <div class="competitor-icon">🏛️</div>
+                    <div class="competitor-title">Bancos Tradicionales</div>
+                    <div class="competitor-desc">Luchan por mantener su posición dominante con soluciones establecidas
+                    </div>
+                </div>
+
+                <div class="competitor-card">
+                    <div class="competitor-icon">🚀</div>
+                    <div class="competitor-title">Fintechs Innovadoras</div>
+                    <div class="competitor-desc">Revolucionan el mercado con soluciones ágiles y disruptivas</div>
+                </div>
+
+                <div class="competitor-card">
+                    <div class="competitor-icon">🖥️</div>
+                    <div class="competitor-title">Big Tech</div>
+                    <div class="competitor-desc">Apple, Google y Amazon integran pagos en sus ecosistemas</div>
+                </div>
+
+                <div class="competitor-card">
+                    <div class="competitor-icon">💳</div>
+                    <div class="competitor-title">Operadores de Tarjetas</div>
+                    <div class="competitor-desc">Visa, Mastercard adaptan sus redes a la era digital</div>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h2 style="margin-bottom: 20px;">📊 Impacto en el Sector Turístico</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">78%</div>
+                        <div class="stat-label">Transacciones Digitales</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">34%</div>
+                        <div class="stat-label">↑ Conversión</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">23%</div>
+                        <div class="stat-label">↑ Valor Reservas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">92%</div>
+                        <div class="stat-label">Sin Contacto 2025</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h2 style="margin-bottom: 20px;">🚀 ¿Estás Listo para la Transformación Digital?</h2>
+                <p style="font-size: 1.2em; margin-bottom: 30px;">Aprovecha la competencia entre proveedores para
+                    optimizar tu estrategia de pagos</p>
+                <button class="cta-button" onclick="generateImage()">📸 Generar Imagen para LinkedIn</button>
+            </div>
+
+            <div class="hashtags">
+                <span class="hashtag">#MediosDePago</span>
+                <span class="hashtag">#TurismoDigital</span>
+                <span class="hashtag">#EconomíaDigital</span>
+                <span class="hashtag">#Fintech</span>
+                <span class="hashtag">#InnovaciónTurística</span>
+                <span class="hashtag">#PagosDigitales</span>
+                <span class="hashtag">#SectorTurístico</span>
+                <span class="hashtag">#TransformaciónDigital</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💡 <strong>Consejo:</strong> Utiliza esta imagen en tu post de LinkedIn para maximizar el engagement</p>
+            <p>📱 <strong>Formato:</strong> 1200x628 píxeles (formato LinkedIn)</p>
+        </div>
+    </div>
+
+    <script>
+        function generateImage() {
+            // Simular generación de imagen
+            alert('🖼️ Imagen generada exitosamente!\n\nPara usar en LinkedIn:\n1. Toma una captura de pantalla\n2. Recorta a 1200x628 píxeles\n3. Añade a tu post\n\n💡 Recomendación: Usa herramientas como Canva o Figma para crear una versión profesional');
+        }
+
+        // Efectos de animación
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.competitor-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeInUp 0.6s ease-out forwards';
+            });
+        });
+
+        // Añadir estilos de animación
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .competitor-card {
+                opacity: 0;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
