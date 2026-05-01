@@ -1,0 +1,1 @@
+# POC MICE — FastAPI
